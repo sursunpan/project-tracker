@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import DashboardLayout from "./DashboardLayout";
 import useProjectDetails from "@/hooks/project/useProjectDetails";
-import DashboardLoading from "./DashboardLoading";
+import DashboardLoading from "../../components/Loading";
 import ProjectAvatar from "@/components/projects/Project-avatar";
 import { Button } from "@/components/ui/button";
 import { PencilIcon } from "lucide-react";

@@ -14,7 +14,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import DashboardLoading from "@/pages/dashboard/DashboardLoading";
+import DashboardLoading from "@/components/Loading";
 import { useDeleteConfirm } from "@/hooks/Delete-Confirm-Hook";
 
 export default function MemberList() {

@@ -10,7 +10,7 @@ import WorkspaceIdSettingPage from "./pages/workspaces/WorkspaceIdSettingPage";
 import Workspacejoin from "./pages/workspaces/Workspacejoin";
 import WorkspaceMembers from "./pages/workspaces/WorkspaceMembersPage";
 import ProjectIdPage from "./pages/dashboard/ProjectIdPage";
-import Error from "./pages/Error";
+import Error from "./components/Error";
 
 function App() {
   return (

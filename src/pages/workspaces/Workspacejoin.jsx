@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useNavigate, useParams } from "react-router-dom";
 import { makeHTTPCall } from "@/helper/make-http-call";
-import DashboardLoading from "../dashboard/DashboardLoading";
+import DashboardLoading from "../../components/Loading";
 
 export default function Workspacejoin() {
   const [isLoading, setIsLoading] = useState(false);

@@ -12,7 +12,7 @@ import {
 import { toast } from "sonner";
 import { makeHTTPCall } from "@/helper/make-http-call";
 import { useState } from "react";
-import DashboardLoading from "@/pages/dashboard/DashboardLoading";
+import DashboardLoading from "@/components/Loading";
 
 export default function JoinWorkspace({ initialValue }) {
   const [isLoading, setIsLoading] = useState(false);

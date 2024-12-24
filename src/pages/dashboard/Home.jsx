@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { makeHTTPCall } from "@/helper/make-http-call";
 import { useNavigate } from "react-router-dom";
-import DashboardLoading from "./DashboardLoading";
+import DashboardLoading from "../../components/Loading";
 
 export default function Home() {
   console.log("--------------->Home");

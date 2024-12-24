@@ -20,7 +20,7 @@ import { ImageIcon } from "lucide-react";
 import { imageUploadOnAWS } from "@/helper/fileUpload";
 import { useNavigate, useParams } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import DashboardLoading from "@/pages/dashboard/DashboardLoading";
+import DashboardLoading from "@/components/Loading";
 import { addWorkspace } from "@/redux/slices/workspaceSlice";
 import { useDispatch } from "react-redux";
 
