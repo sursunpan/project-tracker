@@ -11,6 +11,7 @@ import Workspacejoin from "./pages/workspaces/Workspacejoin";
 import WorkspaceMembers from "./pages/workspaces/WorkspaceMembersPage";
 import ProjectIdPage from "./pages/dashboard/ProjectIdPage";
 import Error from "./components/Error";
+import ProjectIdSettingPage from "./pages/workspaces/projectIdSettingPage";
 
 function App() {
   return (
@@ -35,6 +36,10 @@ function App() {
           <Route
             path="/workspace/:id/project/:projectId"
             element={<ProjectIdPage />}
+          />
+          <Route
+            path="/workspace/:workspaceId/project/:projectId/settings"
+            element={<ProjectIdSettingPage />}
           />
         </Route>
 

@@ -12,94 +12,127 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { makeHTTPCall } from "@/helper/make-http-call";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback } from "../ui/avatar";
-import { ImageIcon } from "lucide-react";
+import { ArrowLeftIcon, ImageIcon } from "lucide-react";
 import { imageUploadOnAWS } from "@/helper/fileUpload";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import DashboardLoading from "@/components/Loading";
-import { addWorkspace } from "@/redux/slices/workspaceSlice";
-import { useDispatch } from "react-redux";
+import { useDeleteConfirm } from "@/hooks/Delete-Confirm-Hook";
+// import { useDeleteConfirm } from "@/hooks/Delete-Confirm-Hook";
 
-export default function CreateProjectForm({ onCancel }) {
+export default function UpdateWorkspaceProjectFrom({
+  initialValue,
+  onCancel,
+  workspaceId,
+  projectId,
+}) {
   const [isLoading, setIsLoading] = useState(false);
-  const [imagePreview, setImagePreview] = useState(null);
+  const [isImageChanged, setIsImageChanged] = useState(false);
+  const [imagePreview, setImagePreview] = useState(initialValue.image || null);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const params = useParams();
+
+  const [DeleteDialog, confirmDelete] = useDeleteConfirm(
+    "Delete Project",
+    "Are you sure you want to delete this project?",
+    "destructive"
+  );
 
   const inputRef = useRef(null);
 
   const form = useForm({
     defaultValues: {
-      name: "",
+      ...initialValue,
     },
   });
 
+  useEffect(() => {
+    if (initialValue.image) {
+      setImagePreview(initialValue.image);
+    }
+  }, [initialValue.image]);
+
   const handleImageChange = (event) => {
     const file = event.target.files[0];
-    if (file) {
-      if (file.size > 1 * 1024 * 1024) {
-        toast.error("File size exceeds 1MB");
-        return;
-      }
-      form.setValue("image", file);
-      setImagePreview(URL.createObjectURL(file));
+    if (file.size > 1 * 1024 * 1024) {
+      toast.error("File size exceeds 1MB");
+      return;
     }
+    form.setValue("image", file);
+    setImagePreview(URL.createObjectURL(file));
+    setIsImageChanged(true);
   };
 
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      let imageUrl = null;
+      let imageUrl = imagePreview;
       const file = form.getValues("image");
-      if (file) {
+      if (file && isImageChanged) {
         imageUrl = await imageUploadOnAWS(file);
         if (!imageUrl) throw new Error("Image upload failed");
       }
       const response = await makeHTTPCall(
-        `/workspace/${params.id}/project/create`,
-        "POST",
+        `workspace/${workspaceId}/project/${projectId}`,
+        "PUT",
         true,
         {
           name: data.name,
           image: imageUrl,
-          workSpaceId: params.id,
         }
       );
-
       const { error, message, project } = response;
       if (error) throw new Error(message || "API error");
-      // dispatch(addWorkspace(response.workspace));
-      toast.success("Workspace Project created successfully!");
+
+      toast.success("Workspace updated successfully!");
       form.reset();
-      setImagePreview(null);
-
-      if (project?.id)
-        navigate(`/workspace/${project.workSpaceId}/project/${project.id}`); // do later
-
+      //   navigate(`/workspace/${response.workspace.id}`);
+      //   if (project?.id) navigate(`/workspace/${project.id}`);
       if (onCancel) onCancel();
     } catch (error) {
+      console.error("Error during workspace creation:", error);
       toast.error(error.message || "Failed to create workspace.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  if (isLoading) {
-    return <DashboardLoading />;
-  }
+  const handleDelete = async () => {
+    setIsLoading(true);
+    try {
+      const ok = await confirmDelete();
+      if (!ok) return;
+
+      const response = await makeHTTPCall(
+        `workspace/${workspaceId}/project/${projectId}`,
+        "DELETE",
+        true
+      );
+      const { error, message } = response;
+      if (error) throw new Error(message || "API error");
+      toast.success("Project deleted successfully!");
+      window.location.href = `/workspace/${workspaceId}`;
+      if (onCancel) onCancel();
+    } catch (error) {
+      console.error("Error during workspace deletion:", error);
+      toast.error(error.message || "Failed to delete project.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
-    <>
+    <div className="flex flex-col gap-y-4">
+      <DeleteDialog />
       <Card className="w-full h-full border-none shadow-none">
-        <CardHeader className="flex p-7">
-          <CardTitle className="text-xl font-bold">
-            Create a new workspace project
-          </CardTitle>
+        <CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y-0">
+          <Button size="sm" variant="secondary" onClick={onCancel}>
+            <ArrowLeftIcon className="size-4 mr-2" />
+            Back
+          </Button>
+          <CardTitle className="text-xl font-bold">Update project</CardTitle>
         </CardHeader>
         <div className="px-7">
           <DottedSeparator />
@@ -116,7 +149,7 @@ export default function CreateProjectForm({ onCancel }) {
                     <FormItem>
                       <FormLabel>Project Name</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Enter project Name" />
+                        <Input {...field} placeholder="Enter Project Name" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -145,7 +178,7 @@ export default function CreateProjectForm({ onCancel }) {
                             </Avatar>
                           )}
                           <div className="flex flex-col">
-                            <p className="text-sm">Project Icon</p>
+                            <p className="text-sm">Workspace Icon</p>
                             <p className="text-sm text-muted-foreground">
                               JPG, PNG, SVG or JPEG, max 1mb
                             </p>
@@ -184,13 +217,33 @@ export default function CreateProjectForm({ onCancel }) {
                   Cancel
                 </Button>
                 <Button type="submit" size="lg">
-                  {isLoading ? "Loading..." : "Create Project"}
+                  {isLoading ? "Loading..." : "Save Changes"}
                 </Button>
               </div>
             </form>
           </Form>
         </CardContent>
       </Card>
-    </>
+      <Card className="w-full h-full border-none shadow-none">
+        <CardContent className="p-7">
+          <div className="flex flex-col">
+            <h3 className="font-bold">Danger Zone</h3>
+            <p className="text-sm text-muted-foreground">
+              Deleting project is irreversible and will remove all associated
+              resources.
+            </p>
+            <Button
+              className="mt-6 w-fit ml-auto"
+              size="sm"
+              variant="destructive"
+              type="button"
+              onClick={handleDelete}
+            >
+              Deleting the project
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

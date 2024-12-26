@@ -5,12 +5,16 @@ import { persistReducer, persistStore } from "redux-persist";
 import modalReducers from "./slices/modalSlice";
 import workspaceReducer from "./slices/workspaceSlice";
 import projectModalReducers from "./slices/projectModalSlice";
+import taskModalReducers from "./slices/taskModalSlice";
+import taskViewReducers from "./slices/taskViewSlice";
 
 const rootReducer = combineReducers({
   userCredentials: userCredentialsReducer,
   modal: modalReducers,
   workspace: workspaceReducer,
   projectModal: projectModalReducers,
+  taskModal: taskModalReducers,
+  taskView: taskViewReducers,
 });
 
 const persistConfig = {

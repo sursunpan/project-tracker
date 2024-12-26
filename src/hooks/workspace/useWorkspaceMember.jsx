@@ -3,37 +3,40 @@ import { makeHTTPCall } from "@/helper/make-http-call";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
-export default function useWorkspaceProject(workspaceId) {
+export default function useWorkspaceMember(workspaceId) {
+  console.log("----------------->useWorkspaceMember");
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchMembers = async () => {
       try {
         setLoading(true);
-        if (!workspaceId) {
-          toast.error("Invalid workspace ID");
-          return;
-        }
         const response = await makeHTTPCall(
-          `/workspace/${workspaceId}/projects`,
+          `workspace/member/${workspaceId}`,
           "GET",
           true
         );
-        console.log("response", response);
-        if (!response.error) {
-          setData(response.projects);
-        } else {
+        if (response.error === false) {
+          toast.success("Member List Success");
+          setData(response.members);
+        }
+
+        if (response.error === true) {
           toast.error(response.message);
+          navigate("");
         }
       } catch (error) {
-        toast.error(error.message);
+        console.error(error);
+        toast.error("An error occurred while fetching members.");
       } finally {
         setLoading(false);
       }
     };
-    fetchData();
-  }, [workspaceId]);
+
+    fetchMembers();
+  }, [navigate, workspaceId]);
 
   return { data, loading };
 }
