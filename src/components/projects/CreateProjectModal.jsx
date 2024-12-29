@@ -1,7 +1,7 @@
-import ResponsiveModal from "../responsive-modal";
+import ResponsiveModal from "../ResponsiveModal";
 import { useDispatch, useSelector } from "react-redux";
 import { closeCreateProjectModal } from "@/redux/slices/projectModalSlice";
-import CreateProjectForm from "./create-project-form";
+import CreateProjectForm from "./CreateProjectForm";
 
 export default function CreateProjectModal() {
   const dispatch = useDispatch();

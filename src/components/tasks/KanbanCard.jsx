@@ -1,9 +1,9 @@
 import { MoreHorizontal } from "lucide-react";
 import TaskAction from "./TaskAction";
-import { DottedSeparator } from "../dotted-separator";
-import WorkspaceMemberavatar from "../workspaces/Member-avatar";
+import { DottedSeparator } from "../DottedSeparator";
+import WorkspaceMemberavatar from "../workspaces/MemberAvatar";
 import TaskDate from "../TaskDate";
-import ProjectAvatar from "../projects/Project-avatar";
+import ProjectAvatar from "../projects/ProjectAvatar";
 
 /* eslint-disable react/prop-types */
 export default function KanbanCard({ task }) {

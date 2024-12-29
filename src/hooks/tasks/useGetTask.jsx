@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { makeHTTPCall } from "@/helper/make-http-call";
-import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
 export default function useGetTask(id) {
@@ -15,17 +14,14 @@ export default function useGetTask(id) {
         setLoading(true);
         const response = await makeHTTPCall(`task/${id}`, "GET", true);
         if (response.error === false) {
-          toast.success("Task fetch successfully");
           setData(response.task);
         }
 
         if (response.error === true) {
-          toast.error(response.message);
           navigate("");
         }
       } catch (error) {
         console.error(error);
-        toast.error("An error occurred while fetching members.");
       } finally {
         setLoading(false);
       }
@@ -33,8 +29,6 @@ export default function useGetTask(id) {
 
     fetchTask();
   }, [id, navigate]);
-
-  //("Fetching members...", data);
 
   console.log("Fetching data..", data);
   return { data, loading };

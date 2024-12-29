@@ -39,8 +39,6 @@ export default function useGetTasks({
           true
         );
 
-        //("Response:", response);
-
         if (!response.error) {
           setData(response.tasks || []);
         } else {

@@ -4,7 +4,7 @@ import useWorkspaceProject from "@/hooks/workspace/useWorkspaceProject";
 import { useParams } from "react-router-dom";
 import { Card, CardContent } from "../ui/card";
 import { Loader } from "lucide-react";
-import CreateTaskForm from "./create-task-form";
+import CreateTaskForm from "./CreateTaskForm";
 
 export default function CreateTaskFormWrapper({ onCancel }) {
   const params = useParams();

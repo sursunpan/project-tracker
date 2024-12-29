@@ -4,7 +4,8 @@ import { openCreateProjectModal } from "@/redux/slices/projectModalSlice";
 import { RiAddCircleFill } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import { Link, useLocation, useParams } from "react-router-dom";
-import ProjectAvatar from "./Project-avatar";
+import ProjectAvatar from "./ProjectAvatar";
+import Loading from "../Loading";
 
 export default function Projects() {
   const params = useParams();
@@ -15,6 +16,10 @@ export default function Projects() {
   const openModal = () => {
     dispatch(openCreateProjectModal());
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="flex flex-col gap-y-2">

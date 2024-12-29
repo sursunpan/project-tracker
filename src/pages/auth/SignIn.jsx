@@ -1,6 +1,6 @@
-import { SignInCard } from "@/components/auth/Sign-in-card";
+import { SignInCard } from "@/components/auth/SignInCard";
 import AuthLayout from "./AuthLayout";
-import useCurrentUser from "@/hooks/CurrentUser";
+import useCurrentUser from "@/hooks/useCurrentUser";
 import { Navigate } from "react-router-dom";
 
 export default function SignIn() {

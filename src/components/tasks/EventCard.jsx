@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
-import WorkspaceMemberavatar from "../workspaces/Member-avatar";
-import ProjectAvatar from "../projects/Project-avatar";
+import WorkspaceMemberavatar from "../workspaces/MemberAvatar";
+import ProjectAvatar from "../projects/ProjectAvatar";
 import { useNavigate, useParams } from "react-router-dom";
 
 const statusColorMap = {

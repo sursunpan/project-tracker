@@ -1,39 +1,44 @@
 import { useState, useEffect } from "react";
 import { makeHTTPCall } from "@/helper/make-http-call";
-import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
 
 export default function useWorkspaceProject(workspaceId) {
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!workspaceId) {
+        setError("Invalid workspace ID");
+        return;
+      }
+
       try {
-        setLoading(true);
-        if (!workspaceId) {
-          toast.error("Invalid workspace ID");
-          return;
-        }
+        setIsLoading(true);
+        setError(null);
+
         const response = await makeHTTPCall(
           `/workspace/${workspaceId}/projects`,
           "GET",
           true
         );
-        //("response", response);
-        if (!response.error) {
-          setData(response.projects);
+
+        if (response.error) {
+          setError(response.message || "Failed to fetch projects");
+          setData(null);
         } else {
-          toast.error(response.message);
+          setData(response.projects || []);
         }
-      } catch (error) {
-        toast.error(error.message);
+      } catch (err) {
+        const message = err.message || "An unexpected error occurred";
+        setError(message);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
+
     fetchData();
   }, [workspaceId]);
 
-  return { data, loading };
+  return { data, isLoading, error };
 }

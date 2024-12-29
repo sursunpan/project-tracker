@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 import Navbar from "@/components/Navbar";
-import CreateProjectModal from "@/components/projects/create-project-modal";
+import CreateProjectModal from "@/components/projects/CreateProjectModal";
 import Sidebar from "@/components/Sidebar";
-import CreateTaskModal from "@/components/tasks/create-task-modal";
+import CreateTaskModal from "@/components/tasks/CreateTaskModal";
 import EditTaskModal from "@/components/tasks/edit-task-modal";
-import CreateWorkspaceModal from "@/components/workspaces/create-workspace-modal";
+import CreateWorkspaceModal from "@/components/workspaces/CreateWorkspaceModal";
 
 export default function DashboardLayout({ children }) {
   return (

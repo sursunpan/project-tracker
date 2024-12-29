@@ -1,5 +1,5 @@
-import ResponsiveModal from "../responsive-modal";
-import CreateWorkspaceFrom from "./create-workspace-from";
+import ResponsiveModal from "../ResponsiveModal";
+import CreateWorkspaceFrom from "./CreateWorkspaceFrom";
 import { useDispatch, useSelector } from "react-redux";
 import { closeCreateWorkspaceModal } from "@/redux/slices/modalSlice";
 

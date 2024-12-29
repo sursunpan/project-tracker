@@ -1,4 +1,4 @@
-import MemberList from "@/components/workspaces/member-list";
+import MemberList from "@/components/workspaces/MemberList";
 import WorkspaceLayout from "./WorkspaceLayout";
 
 export default function WorkspaceMembers() {

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { DottedSeparator } from "./dotted-separator";
+import { DottedSeparator } from "./DottedSeparator";
 import Navigation from "./Navigation";
 import WorkspaceSwitcher from "./workspaces/WorkspaceSwitcher";
 import Projects from "./projects/Projects";

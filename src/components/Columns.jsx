@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, MoreVerticalIcon } from "lucide-react";
-import ProjectAvatar from "./projects/Project-avatar";
-import WorkspaceMemberavatar from "./workspaces/Member-avatar";
+import ProjectAvatar from "./projects/ProjectAvatar";
+import WorkspaceMemberavatar from "./workspaces/MemberAvatar";
 import TaskDate from "./TaskDate";
 import { Badge } from "./ui/badge";
 import { snakeCaseToTitleCase } from "@/lib/utils";

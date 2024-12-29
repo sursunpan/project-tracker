@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useForm } from "react-hook-form";
-import { DottedSeparator } from "../dotted-separator";
+import { DottedSeparator } from "../DottedSeparator";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import {
   Form,
@@ -12,31 +12,35 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { makeHTTPCall } from "@/helper/make-http-call";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback } from "../ui/avatar";
-import { ArrowLeftIcon, ImageIcon } from "lucide-react";
+import { ArrowLeftIcon, CopyIcon, ImageIcon } from "lucide-react";
 import { imageUploadOnAWS } from "@/helper/fileUpload";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { useDeleteConfirm } from "@/hooks/Delete-Confirm-Hook";
-// import { useDeleteConfirm } from "@/hooks/Delete-Confirm-Hook";
+import { useDeleteConfirm } from "@/hooks/useDeleteConfirm";
 
-export default function UpdateWorkspaceProjectFrom({
+export default function UpdateWorkspaceFrom({
   initialValue,
   onCancel,
   workspaceId,
-  projectId,
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isImageChanged, setIsImageChanged] = useState(false);
-  const [imagePreview, setImagePreview] = useState(initialValue.image || null);
+  const [imagePreview, setImagePreview] = useState(null);
   const navigate = useNavigate();
 
   const [DeleteDialog, confirmDelete] = useDeleteConfirm(
-    "Delete Project",
-    "Are you sure you want to delete this project?",
+    "Delete Workspace",
+    "Are you sure you want to delete this workspace?",
+    "destructive"
+  );
+
+  const [ResetDialog, confirmReset] = useDeleteConfirm(
+    "Reset Invite Link",
+    "Are you sure you want to Reset the Link?",
     "destructive"
   );
 
@@ -47,12 +51,6 @@ export default function UpdateWorkspaceProjectFrom({
       ...initialValue,
     },
   });
-
-  useEffect(() => {
-    if (initialValue.image) {
-      setImagePreview(initialValue.image);
-    }
-  }, [initialValue.image]);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -68,14 +66,14 @@ export default function UpdateWorkspaceProjectFrom({
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      let imageUrl = imagePreview;
+      let imageUrl = null;
       const file = form.getValues("image");
       if (file && isImageChanged) {
         imageUrl = await imageUploadOnAWS(file);
         if (!imageUrl) throw new Error("Image upload failed");
       }
       const response = await makeHTTPCall(
-        `workspace/${workspaceId}/project/${projectId}`,
+        `workspace/${workspaceId}`,
         "PUT",
         true,
         {
@@ -83,13 +81,13 @@ export default function UpdateWorkspaceProjectFrom({
           image: imageUrl,
         }
       );
-      const { error, message, project } = response;
+      const { error, message, workspace } = response;
       if (error) throw new Error(message || "API error");
 
       toast.success("Workspace updated successfully!");
       form.reset();
-      //   navigate(`/workspace/${response.workspace.id}`);
-      //   if (project?.id) navigate(`/workspace/${project.id}`);
+      navigate(`/workspace/${response.workspace.id}`);
+      if (workspace?.id) navigate(`/workspace/${workspace.id}`);
       if (onCancel) onCancel();
     } catch (error) {
       console.error("Error during workspace creation:", error);
@@ -106,33 +104,69 @@ export default function UpdateWorkspaceProjectFrom({
       if (!ok) return;
 
       const response = await makeHTTPCall(
-        `workspace/${workspaceId}/project/${projectId}`,
+        `workspace/${initialValue.id}`,
         "DELETE",
         true
       );
-      const { error, message } = response;
-      if (error) throw new Error(message || "API error");
-      toast.success("Project deleted successfully!");
-      window.location.href = `/workspace/${workspaceId}`;
-      if (onCancel) onCancel();
+      if (response.error === false) {
+        toast.success("Workspace deleted successfully!");
+        navigate("/");
+      } else {
+        throw new Error(response.message);
+      }
+      //("delete");
     } catch (error) {
       console.error("Error during workspace deletion:", error);
-      toast.error(error.message || "Failed to delete project.");
+      toast.error(error.message || "Failed to delete workspace.");
     } finally {
       setIsLoading(false);
     }
   };
 
+  const handleChangeLink = async () => {
+    setIsLoading(false);
+    try {
+      const ok = await confirmReset();
+      if (!ok) return;
+
+      const response = await makeHTTPCall(
+        `workspace/changeinvitecode/${initialValue.id}`,
+        "POST",
+        true
+      );
+      if (response.error === false) {
+        toast.success("Invite link is updated!");
+        window.location.reload();
+      } else {
+        throw new Error(response.message);
+      }
+      //("delete");
+    } catch (error) {
+      console.error("Error during workspace deletion:", error);
+      toast.error(error.message || "Failed to reset link.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fullInviteLink = `http://localhost:5173/workspace/${initialValue.id}/join/${initialValue.inviteCode}`;
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(fullInviteLink);
+    toast.success("Invite link copied to clipboard!");
+  };
+
   return (
     <div className="flex flex-col gap-y-4">
       <DeleteDialog />
+      <ResetDialog />
       <Card className="w-full h-full border-none shadow-none">
         <CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y-0">
           <Button size="sm" variant="secondary" onClick={onCancel}>
             <ArrowLeftIcon className="size-4 mr-2" />
             Back
           </Button>
-          <CardTitle className="text-xl font-bold">Update project</CardTitle>
+          <CardTitle className="text-xl font-bold">Update workspace</CardTitle>
         </CardHeader>
         <div className="px-7">
           <DottedSeparator />
@@ -147,9 +181,9 @@ export default function UpdateWorkspaceProjectFrom({
                   rules={{ required: "Workspace name is required" }}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Project Name</FormLabel>
+                      <FormLabel>Workspace Name</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Enter Project Name" />
+                        <Input {...field} placeholder="Enter workspace Name" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -158,11 +192,11 @@ export default function UpdateWorkspaceProjectFrom({
                 <FormField
                   control={form.control}
                   name="image"
-                  render={() => {
+                  render={({ field }) => {
                     return (
                       <div className="flex flex-col gap-y-2">
                         <div className="flex items-center gap-x-5">
-                          {imagePreview ? (
+                          {field.value ? (
                             <div className="size-[72px] relative rounded-md overflow-hidden">
                               <img
                                 alt="logo"
@@ -227,9 +261,40 @@ export default function UpdateWorkspaceProjectFrom({
       <Card className="w-full h-full border-none shadow-none">
         <CardContent className="p-7">
           <div className="flex flex-col">
+            <h3 className="font-bold">Invite Members</h3>
+            <p className="text-sm text-muted-foreground">
+              Use the invite link to add members to your workspace.
+            </p>
+            <div className="mt-4 ">
+              <div className="flex items-center gap-x-2">
+                <Input disabled value={fullInviteLink} />
+                <Button
+                  variant="secondary"
+                  className="size-12"
+                  onClick={handleCopyLink}
+                >
+                  <CopyIcon className="size-5" />
+                </Button>
+              </div>
+            </div>
+            <Button
+              className="mt-6 w-fit ml-auto"
+              size="sm"
+              variant="destructive"
+              type="button"
+              onClick={handleChangeLink}
+            >
+              Reset invite link
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+      <Card className="w-full h-full border-none shadow-none">
+        <CardContent className="p-7">
+          <div className="flex flex-col">
             <h3 className="font-bold">Danger Zone</h3>
             <p className="text-sm text-muted-foreground">
-              Deleting project is irreversible and will remove all associated
+              Deleting workspace is irreversible and will remove all associated
               resources.
             </p>
             <Button
@@ -239,7 +304,7 @@ export default function UpdateWorkspaceProjectFrom({
               type="button"
               onClick={handleDelete}
             >
-              Deleting the project
+              Deleting the workspace
             </Button>
           </div>
         </CardContent>

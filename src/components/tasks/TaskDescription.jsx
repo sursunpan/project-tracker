@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { PencilIcon, XIcon } from "lucide-react";
 import { Button } from "../ui/button";
-import { DottedSeparator } from "../dotted-separator";
+import { DottedSeparator } from "../DottedSeparator";
 import { useState } from "react";
 import { makeHTTPCall } from "@/helper/make-http-call";
 import { toast } from "sonner";

@@ -1,4 +1,4 @@
-import { DottedSeparator } from "../dotted-separator";
+import { DottedSeparator } from "../DottedSeparator";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
@@ -15,10 +15,11 @@ import {
 } from "../ui/form";
 import { Link, useNavigate } from "react-router-dom";
 import { makeHTTPCall } from "@/helper/make-http-call";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Login_User } from "@/redux/slices/userCredentialSlice";
 import { decodeToken } from "@/helper/jwt-decode";
 import { toast } from "sonner";
+import Loading from "../Loading";
 
 export const SignInCard = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -32,25 +33,34 @@ export const SignInCard = () => {
     },
   });
 
-  const onSubmit = async (data) => {
-    setIsLoading(true);
-    const response = await makeHTTPCall("login", "POST", false, {
-      email: data.email,
-      password: data.password,
-    });
-    if (response.error === true) {
-      setIsLoading(false);
-      toast.error(response.message);
-    } else {
-      setIsLoading(false);
-      toast.success("Login Successfully!");
-      if (!response.user) {
-        response.user = decodeToken(response.token);
+  const onSubmit = useCallback(
+    async (data) => {
+      setIsLoading(true);
+      try {
+        const response = await makeHTTPCall("login", "POST", false, {
+          email: data.email,
+          password: data.password,
+        });
+        if (response.error === true) {
+          setIsLoading(false);
+          toast.error(response.message);
+        } else {
+          setIsLoading(false);
+          toast.success("Login Successfully!");
+          if (!response.user) {
+            response.user = decodeToken(response.token);
+          }
+          dispatch(Login_User({ token: response.token, user: response.user }));
+          navigate("/");
+        }
+      } catch (err) {
+        console.error(err);
+        toast.error("Failed to login. Please try again.");
+        setIsLoading(false);
       }
-      dispatch(Login_User({ token: response.token, user: response.user }));
-      navigate("/");
-    }
-  };
+    },
+    [dispatch, navigate]
+  );
 
   return (
     <>
@@ -104,8 +114,8 @@ export const SignInCard = () => {
                   </FormItem>
                 )}
               />
-              <Button disabled={false} size="lg" className="w-full">
-                {isLoading ? "Loading..." : "Login"}
+              <Button disabled={isLoading} size="lg" className="w-full">
+                {isLoading ? <Loading /> : "Login"}
               </Button>
             </form>
           </Form>
@@ -115,7 +125,7 @@ export const SignInCard = () => {
         </div>
         <CardContent className="p-7 flex flex-col gap-y-4">
           <Button
-            disabled={false}
+            disabled={isLoading}
             variant="secondary"
             size="lg"
             className="w-full"
@@ -124,7 +134,7 @@ export const SignInCard = () => {
             Login With Google
           </Button>
           <Button
-            disabled={false}
+            disabled={isLoading}
             variant="secondary"
             size="lg"
             className="w-full"

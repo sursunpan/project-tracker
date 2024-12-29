@@ -1,7 +1,7 @@
-import UpdateWorkspaceFrom from "@/components/workspaces/update-workspace-from";
+import UpdateWorkspaceFrom from "@/components/workspaces/UpdateWorkspaceFrom";
 import { useNavigate, useParams } from "react-router-dom";
 import WorkspaceLayout from "./WorkspaceLayout";
-import DashboardLoading from "../../components/Loading";
+import Loading from "../../components/Loading";
 import useWorkspaceData from "@/hooks/workspace/useWorkspaceData";
 
 export default function WorkspaceIdSettingPage() {
@@ -10,7 +10,7 @@ export default function WorkspaceIdSettingPage() {
   const { data: initialData, loading: isLoading } = useWorkspaceData(id);
   const navigate = useNavigate();
 
-  if (initialData === null || isLoading) return <DashboardLoading />;
+  if (initialData === null || isLoading) return <Loading />;
 
   return (
     <WorkspaceLayout>

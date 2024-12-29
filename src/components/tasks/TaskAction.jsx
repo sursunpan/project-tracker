@@ -6,7 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { useDeleteConfirm } from "@/hooks/Delete-Confirm-Hook";
+import { useDeleteConfirm } from "@/hooks/useDeleteConfirm";
 import { toast } from "sonner";
 import { makeHTTPCall } from "@/helper/make-http-call";
 import { useNavigate, useParams } from "react-router-dom";

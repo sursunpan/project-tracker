@@ -2,11 +2,11 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { ArrowLeftIcon, MoreVerticalIcon } from "lucide-react";
-import { DottedSeparator } from "../dotted-separator";
+import { DottedSeparator } from "../DottedSeparator";
 import { Fragment, useEffect, useState } from "react";
 import { makeHTTPCall } from "@/helper/make-http-call";
 import { toast } from "sonner";
-import WorkspaceMemberavatar from "./Member-avatar";
+import WorkspaceMemberavatar from "./MemberAvatar";
 import { Separator } from "../ui/separator";
 import {
   DropdownMenu,
@@ -14,8 +14,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import DashboardLoading from "@/components/Loading";
-import { useDeleteConfirm } from "@/hooks/Delete-Confirm-Hook";
+import Loading from "@/components/Loading";
+import { useDeleteConfirm } from "@/hooks/useDeleteConfirm";
 
 export default function MemberList() {
   const [isFetching, setIsFetching] = useState(false);
@@ -136,7 +136,7 @@ export default function MemberList() {
     }
   };
   if (isLoading || isFetching) {
-    return <DashboardLoading />;
+    return <Loading />;
   }
 
   return (

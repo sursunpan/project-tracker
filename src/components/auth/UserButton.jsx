@@ -1,4 +1,4 @@
-import useCurrentUser from "@/hooks/CurrentUser";
+import useCurrentUser from "@/hooks/useCurrentUser";
 import { Loader, LogOut } from "lucide-react";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import {
@@ -7,17 +7,18 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { DottedSeparator } from "../dotted-separator";
+import { DottedSeparator } from "../DottedSeparator";
 import { useDispatch } from "react-redux";
 import { Logout_User } from "@/redux/slices/userCredentialSlice";
 
 export default function UserButton() {
-  const { token, user, isLoading } = useCurrentUser();
+  const { user, isLoading } = useCurrentUser();
   const dispatch = useDispatch();
 
   const handleLogout = () => {
     dispatch(Logout_User());
   };
+
   if (isLoading) {
     return (
       <div className="size-10 rounded-full flex items-center justify-center bg-neutral-200 border-neutral-300">
@@ -36,7 +37,11 @@ export default function UserButton() {
 
   return (
     <DropdownMenu modal={false}>
-      <DropdownMenuTrigger className="outline-none relative">
+      <DropdownMenuTrigger
+        className={`outline-none relative ${
+          isLoading ? "pointer-events-none opacity-50" : ""
+        }`}
+      >
         <Avatar className="size-10 hover:opacity-75 transition border border-neutral-300">
           <AvatarFallback className="bg-neutral-200 font-medium text-neutral-500 flex items-center justify-center">
             {avatarFallback}

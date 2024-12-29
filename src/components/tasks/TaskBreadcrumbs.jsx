@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
-import ProjectAvatar from "../projects/Project-avatar";
+import ProjectAvatar from "../projects/ProjectAvatar";
 import { Link, useNavigate } from "react-router-dom";
 import { ChevronsRightIcon, TrashIcon } from "lucide-react";
 import { Button } from "../ui/button";
-import { useDeleteConfirm } from "@/hooks/Delete-Confirm-Hook";
+import { useDeleteConfirm } from "@/hooks/useDeleteConfirm";
 import { toast } from "sonner";
 import { makeHTTPCall } from "@/helper/make-http-call";
 import { useState } from "react";

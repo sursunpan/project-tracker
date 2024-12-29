@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import UserButton from "./auth/UserButton";
-import MobileSidebar from "./Mobile-sidebar";
+import MobileSidebar from "./MobileSidebar";
 
 const pathNameMap = {
   tasks: {

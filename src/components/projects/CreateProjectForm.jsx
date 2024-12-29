@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useForm } from "react-hook-form";
-import { DottedSeparator } from "../dotted-separator";
+import { DottedSeparator } from "../DottedSeparator";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import {
   Form,
@@ -20,15 +20,12 @@ import { ImageIcon } from "lucide-react";
 import { imageUploadOnAWS } from "@/helper/fileUpload";
 import { useNavigate, useParams } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import DashboardLoading from "@/components/Loading";
-import { addWorkspace } from "@/redux/slices/workspaceSlice";
-import { useDispatch } from "react-redux";
+import Loading from "@/components/Loading";
 
 export default function CreateProjectForm({ onCancel }) {
   const [isLoading, setIsLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const params = useParams();
 
   const inputRef = useRef(null);
@@ -73,7 +70,6 @@ export default function CreateProjectForm({ onCancel }) {
 
       const { error, message, project } = response;
       if (error) throw new Error(message || "API error");
-      // dispatch(addWorkspace(response.workspace));
       toast.success("Workspace Project created successfully!");
       form.reset();
       setImagePreview(null);
@@ -88,10 +84,6 @@ export default function CreateProjectForm({ onCancel }) {
       setIsLoading(false);
     }
   };
-
-  if (isLoading) {
-    return <DashboardLoading />;
-  }
 
   return (
     <>
@@ -183,8 +175,8 @@ export default function CreateProjectForm({ onCancel }) {
                 >
                   Cancel
                 </Button>
-                <Button type="submit" size="lg">
-                  {isLoading ? "Loading..." : "Create Project"}
+                <Button disabled={isLoading} type="submit" size="lg">
+                  {isLoading ? <Loading /> : "Create Project"}
                 </Button>
               </div>
             </form>

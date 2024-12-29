@@ -1,10 +1,10 @@
-import JoinWorkspace from "@/components/workspaces/join-workspace";
+import JoinWorkspace from "@/components/workspaces/JoinWorkspace";
 import WorkspaceLayout from "./WorkspaceLayout";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useNavigate, useParams } from "react-router-dom";
 import { makeHTTPCall } from "@/helper/make-http-call";
-import DashboardLoading from "../../components/Loading";
+import Loading from "../../components/Loading";
 
 export default function Workspacejoin() {
   const [isLoading, setIsLoading] = useState(false);
@@ -56,7 +56,7 @@ export default function Workspacejoin() {
   }, [param.id, navigate]);
 
   if (isLoading || joinWorkspace === null) {
-    return <DashboardLoading />;
+    return <Loading />;
   }
 
   return (

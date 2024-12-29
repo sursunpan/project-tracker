@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { DottedSeparator } from "../dotted-separator";
+import { DottedSeparator } from "../DottedSeparator";
 import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 import AnalyticsCard from "./AnalyticsCard";
 

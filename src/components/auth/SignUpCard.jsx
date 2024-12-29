@@ -1,4 +1,4 @@
-import { DottedSeparator } from "../dotted-separator";
+import { DottedSeparator } from "../DottedSeparator";
 import { Button } from "../ui/button";
 import {
   Card,
@@ -20,8 +20,9 @@ import {
   FormMessage,
 } from "../ui/form";
 import { makeHTTPCall } from "@/helper/make-http-call";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { toast } from "sonner";
+import Loading from "../Loading";
 
 export const SignUpCard = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -35,21 +36,31 @@ export const SignUpCard = () => {
     },
   });
 
-  const onSubmit = async (data) => {
-    const response = await makeHTTPCall("register", "POST", false, {
-      name: data.name,
-      email: data.email,
-      password: data.password,
-    });
-    if (response.error === true) {
-      setIsLoading(false);
-      toast.error(response.message);
-    } else {
-      setIsLoading(false);
-      toast.success("Registration Successful! Please login now.");
-      navigate("/sign-in");
-    }
-  };
+  const onSubmit = useCallback(
+    async (data) => {
+      try {
+        setIsLoading(true);
+        const response = await makeHTTPCall("register", "POST", false, {
+          name: data.name,
+          email: data.email,
+          password: data.password,
+        });
+        if (response.error === true) {
+          setIsLoading(false);
+          toast.error(response.message);
+        } else {
+          setIsLoading(false);
+          toast.success("Registration Successful! Please login now.");
+          navigate("/sign-in");
+        }
+      } catch (err) {
+        console.error(err);
+        toast.error("Failed to sign up. Please try again.");
+        setIsLoading(false);
+      }
+    },
+    [navigate]
+  );
 
   return (
     <>
@@ -137,8 +148,8 @@ export const SignUpCard = () => {
                   );
                 }}
               />
-              <Button disabled={false} size="lg" className="w-full">
-                {isLoading ? "Loading..." : "Sign Up"}
+              <Button disabled={isLoading} size="lg" className="w-full">
+                {isLoading ? <Loading /> : "Sign Up"}
               </Button>
             </form>
           </Form>

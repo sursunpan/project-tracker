@@ -1,8 +1,8 @@
 import { PencilIcon } from "lucide-react";
 import { Button } from "../ui/button";
-import { DottedSeparator } from "../dotted-separator";
+import { DottedSeparator } from "../DottedSeparator";
 import OverviewProperty from "./OverviewProperty";
-import WorkspaceMemberavatar from "../workspaces/Member-avatar";
+import WorkspaceMemberavatar from "../workspaces/MemberAvatar";
 import TaskDate from "../TaskDate";
 import { Badge } from "../ui/badge";
 import { snakeCaseToTitleCase } from "@/lib/utils";

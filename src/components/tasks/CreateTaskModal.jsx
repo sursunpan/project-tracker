@@ -1,7 +1,7 @@
-import ResponsiveModal from "../responsive-modal";
+import ResponsiveModal from "../ResponsiveModal";
 import { useDispatch, useSelector } from "react-redux";
 import { closeTaskModal } from "@/redux/slices/taskModalSlice";
-import CreateTaskFormWrapper from "./create-task-modal-wrapper";
+import CreateTaskFormWrapper from "./CreateTaskModalWrapper";
 
 export default function CreateTaskModal() {
   const dispatch = useDispatch();

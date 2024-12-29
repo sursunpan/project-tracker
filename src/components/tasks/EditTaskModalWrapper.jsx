@@ -4,7 +4,7 @@ import useWorkspaceProject from "@/hooks/workspace/useWorkspaceProject";
 import { useParams } from "react-router-dom";
 import { Card, CardContent } from "../ui/card";
 import { Loader } from "lucide-react";
-import EditTaskForm from "./edit-task-form";
+import EditTaskForm from "./EditTaskForm";
 import useGetTask from "@/hooks/tasks/useGetTask";
 
 export default function EditTaskFormWrapper({ onCancel, id }) {

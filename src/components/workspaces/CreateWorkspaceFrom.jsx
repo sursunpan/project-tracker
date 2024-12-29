@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useForm } from "react-hook-form";
-import { DottedSeparator } from "../dotted-separator";
+import { DottedSeparator } from "../DottedSeparator";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import {
   Form,
@@ -20,7 +20,7 @@ import { ImageIcon } from "lucide-react";
 import { imageUploadOnAWS } from "@/helper/fileUpload";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import DashboardLoading from "@/components/Loading";
+import Loading from "@/components/Loading";
 import { addWorkspace } from "@/redux/slices/workspaceSlice";
 import { useDispatch } from "react-redux";
 
@@ -82,7 +82,7 @@ export default function CreateWorkspaceFrom({ onCancel }) {
   };
 
   if (isLoading) {
-    return <DashboardLoading />;
+    return <Loading />;
   }
 
   return (

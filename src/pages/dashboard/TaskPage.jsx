@@ -1,4 +1,4 @@
-import TaskViewSwitcher from "@/components/tasks/task-view-switcher";
+import TaskViewSwitcher from "@/components/tasks/TaskViewSwitcher";
 import DashboardLayout from "./DashboardLayout";
 
 export default function TaskPage() {

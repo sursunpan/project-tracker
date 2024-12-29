@@ -1,4 +1,4 @@
-import CreateWorkspaceFrom from "@/components/workspaces/create-workspace-from";
+import CreateWorkspaceFrom from "@/components/workspaces/CreateWorkspaceFrom";
 import WorkspaceLayout from "./WorkspaceLayout";
 
 export default function Create() {

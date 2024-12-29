@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useForm } from "react-hook-form";
-import { DottedSeparator } from "../dotted-separator";
+import { DottedSeparator } from "../DottedSeparator";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import {
   Form,
@@ -17,8 +17,8 @@ import { makeHTTPCall } from "@/helper/make-http-call";
 import { toast } from "sonner";
 import { useParams } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import DashboardLoading from "@/components/Loading";
-import DatePicker from "../datePicker";
+import Loading from "@/components/Loading";
+import DatePicker from "../DatePicker";
 import {
   Select,
   SelectContent,
@@ -26,7 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import WorkspaceMemberavatar from "../workspaces/Member-avatar";
+import WorkspaceMemberavatar from "../workspaces/MemberAvatar";
 
 export default function CreateTaskForm({
   onCancel,
@@ -71,7 +71,7 @@ export default function CreateTaskForm({
   };
 
   if (isLoading) {
-    return <DashboardLoading />;
+    return <Loading />;
   }
 
   return (

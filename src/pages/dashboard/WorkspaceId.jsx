@@ -5,19 +5,19 @@ import useWorkspaceAnalytics from "@/hooks/workspace/useWorkspaceAnalytic";
 import useGetTasks from "@/hooks/tasks/useGetTasks";
 import useWorkspaceProject from "@/hooks/workspace/useWorkspaceProject";
 import useWorkspaceMember from "@/hooks/workspace/useWorkspaceMember";
-import DashboardLoading from "@/components/Loading";
+import Loading from "@/components/Loading";
 import Error from "@/components/Error";
 import Analytics from "@/components/projects/Analytics";
 import { Button } from "@/components/ui/button";
 import { CalendarIcon, PlusIcon, SettingsIcon } from "lucide-react";
-import { DottedSeparator } from "@/components/dotted-separator";
+import { DottedSeparator } from "@/components/DottedSeparator";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatDistanceToNow } from "date-fns";
-import ProjectAvatar from "@/components/projects/Project-avatar";
+import ProjectAvatar from "@/components/projects/ProjectAvatar";
 import { useDispatch } from "react-redux";
 import { openTaskModal } from "@/redux/slices/taskModalSlice";
 import { openCreateProjectModal } from "@/redux/slices/projectModalSlice";
-import WorkspaceMemberavatar from "@/components/workspaces/Member-avatar";
+import WorkspaceMemberavatar from "@/components/workspaces/MemberAvatar";
 
 export default function WorkspaceId() {
   const param = useParams();
@@ -39,7 +39,7 @@ export default function WorkspaceId() {
   const loading =
     loadingAnalytics || taskLoading || workspaceLoading || memberLoading;
 
-  if (loading) return <DashboardLoading />;
+  if (loading) return <Loading />;
 
   if (!workspaceData || !taskData || !memberData || !analytics) {
     return <Error />;

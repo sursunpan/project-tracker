@@ -1,11 +1,11 @@
 import { Link, useParams } from "react-router-dom";
 import DashboardLayout from "./DashboardLayout";
 import useProjectDetails from "@/hooks/project/useProjectDetails";
-import DashboardLoading from "../../components/Loading";
-import ProjectAvatar from "@/components/projects/Project-avatar";
+import Loading from "../../components/Loading";
+import ProjectAvatar from "@/components/projects/ProjectAvatar";
 import { Button } from "@/components/ui/button";
 import { PencilIcon } from "lucide-react";
-import TaskViewSwitcher from "@/components/tasks/task-view-switcher";
+import TaskViewSwitcher from "@/components/tasks/TaskViewSwitcher";
 import useProjectAnalytics from "@/hooks/project/useProjectAnalytic";
 import Analytics from "@/components/projects/Analytics";
 
@@ -24,7 +24,7 @@ export default function ProjectIdPage() {
   return (
     <>
       {projectLoading || analyticsLoading ? (
-        <DashboardLoading />
+        <Loading />
       ) : (
         <DashboardLayout>
           <div className="flex flex-col gap-y-4">

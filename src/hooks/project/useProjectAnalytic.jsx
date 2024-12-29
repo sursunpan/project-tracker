@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { makeHTTPCall } from "@/helper/make-http-call";
-import { toast } from "sonner";
 
 export default function useProjectAnalytics(projectId) {
   const [data, setData] = useState(null);
@@ -18,11 +17,9 @@ export default function useProjectAnalytics(projectId) {
         if (!response.error) {
           setData(response);
         } else {
-          toast.error(response.message);
           throw new Error(response.message);
         }
       } catch (error) {
-        toast.error(error.message);
         throw new Error(error.message);
       } finally {
         setLoading(false);
@@ -30,8 +27,6 @@ export default function useProjectAnalytics(projectId) {
     };
     fetchData();
   }, [projectId]);
-
-  console.log("data......................", data);
 
   return { data, loading };
 }

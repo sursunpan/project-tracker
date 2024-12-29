@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { makeHTTPCall } from "@/helper/make-http-call";
 import { useNavigate } from "react-router-dom";
-import DashboardLoading from "../../components/Loading";
+import Loading from "../../components/Loading";
 
 export default function Home() {
   //("--------------->Home");
@@ -39,7 +39,7 @@ export default function Home() {
         height: "100vh",
       }}
     >
-      {loading ? <DashboardLoading /> : <p>Redirecting...</p>}
+      {loading ? <Loading /> : <p>Redirecting...</p>}
     </div>
   );
 }

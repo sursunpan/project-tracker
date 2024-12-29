@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { makeHTTPCall } from "@/helper/make-http-call";
-import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
 export default function useProjectDetails(workspaceId, projectId) {
@@ -13,7 +12,6 @@ export default function useProjectDetails(workspaceId, projectId) {
       try {
         setLoading(true);
         if (!workspaceId || !projectId) {
-          toast.error("invalid workspace or project id");
           navigate("/");
           return;
         }
@@ -25,11 +23,9 @@ export default function useProjectDetails(workspaceId, projectId) {
         if (!response.error) {
           setData(response.project);
         } else {
-          toast.error(response.message);
           throw new Error(response.message);
         }
       } catch (error) {
-        toast.error(error.message);
         throw new Error(error.message);
       } finally {
         setLoading(false);

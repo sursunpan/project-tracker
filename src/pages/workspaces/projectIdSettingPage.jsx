@@ -1,15 +1,15 @@
 import useProjectDetails from "@/hooks/project/useProjectDetails";
 import WorkspaceLayout from "./WorkspaceLayout";
 import { useNavigate, useParams } from "react-router-dom";
-import DashboardLoading from "@/components/Loading";
-import UpdateWorkspaceProjectFrom from "@/components/projects/update-project-form";
+import Loading from "@/components/Loading";
+import UpdateWorkspaceProjectFrom from "@/components/projects/UpdateProjectForm";
 
 export default function ProjectIdSettingPage() {
   const { workspaceId, projectId } = useParams();
   const navigate = useNavigate();
   const { data, loading } = useProjectDetails(workspaceId, projectId);
 
-  if (loading) return <DashboardLoading />;
+  if (loading) return <Loading />;
   if (!data) return null;
 
   return (

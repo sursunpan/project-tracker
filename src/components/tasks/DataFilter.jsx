@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { FolderIcon, ListCheckIcon, UserIcon } from "lucide-react";
-import DatePicker from "../datePicker";
+import DatePicker from "../DatePicker";
 
 export default function DataFilter({ filter, setFilter, hideProjectFilter }) {
   const params = useParams();

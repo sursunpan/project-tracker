@@ -1,10 +1,10 @@
 import Error from "@/components/Error";
-import DashboardLoading from "@/components/Loading";
+import Loading from "@/components/Loading";
 import useGetTask from "@/hooks/tasks/useGetTask";
 import { useParams } from "react-router-dom";
 import TaskBreadcrumbs from "@/components/tasks/TaskBreadcrumbs";
 import DashboardLayout from "./DashboardLayout";
-import { DottedSeparator } from "@/components/dotted-separator";
+import { DottedSeparator } from "@/components/DottedSeparator";
 import TaskOverview from "@/components/tasks/TaskOverview";
 import TaskDescription from "@/components/tasks/TaskDescription";
 
@@ -13,7 +13,7 @@ export default function TaskIdPage() {
   const { data, loading } = useGetTask(params.taskId);
 
   if (loading) {
-    return <DashboardLoading />;
+    return <Loading />;
   }
 
   if (!data) {

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { DottedSeparator } from "../dotted-separator";
+import { DottedSeparator } from "../DottedSeparator";
 import { Button } from "../ui/button";
 import {
   Card,
@@ -12,7 +12,7 @@ import {
 import { toast } from "sonner";
 import { makeHTTPCall } from "@/helper/make-http-call";
 import { useState } from "react";
-import DashboardLoading from "@/components/Loading";
+import Loading from "@/components/Loading";
 
 export default function JoinWorkspace({ initialValue }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -52,7 +52,7 @@ export default function JoinWorkspace({ initialValue }) {
   };
 
   if (isLoading) {
-    return <DashboardLoading />;
+    return <Loading />;
   }
 
   return (
