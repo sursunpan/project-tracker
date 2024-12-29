@@ -20,7 +20,7 @@ export const makeHTTPCall = async (endPoint, type, isToken, body) => {
       options.body = JSON.stringify(body);
     }
 
-    console.log(options);
+    //(options);
 
     const response = await fetch(
       `http://localhost:3000/api/v1/${endPoint}`,

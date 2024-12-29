@@ -16,16 +16,13 @@ import DatePicker from "../datePicker";
 export default function DataFilter({ filter, setFilter, hideProjectFilter }) {
   const params = useParams();
 
-  console.log(params.id);
-
+  console.log("filter>>>>>>>>>>>", filter);
   const { data: projects, isLoading: isLoadingProjects } = useWorkspaceProject(
     params.id
   );
   const { data: members, isLoading: isLoadingMembers } = useWorkspaceMember(
     params.id
   );
-
-  console.log("members: " + members);
 
   const projectOptions = projects?.map((project) => ({
     value: project.id,
@@ -53,7 +50,7 @@ export default function DataFilter({ filter, setFilter, hideProjectFilter }) {
   const onAssigneeIdChange = (value) => {
     setFilter((prevFilter) => ({
       ...prevFilter,
-      status: value === "all" ? undefined : value,
+      assigneeId: value === "all" ? undefined : value,
     }));
   };
 
@@ -71,12 +68,12 @@ export default function DataFilter({ filter, setFilter, hideProjectFilter }) {
     }));
   };
 
-  const onSearchChange = (event) => {
-    setFilter((prevFilter) => ({
-      ...prevFilter,
-      search: event.target.value,
-    }));
-  };
+  // const onSearchChange = (event) => {
+  //   setFilter((prevFilter) => ({
+  //     ...prevFilter,
+  //     search: event.target.value,
+  //   }));
+  // };
 
   return (
     <div className="flex flex-col lg:flex-row gap-2">
@@ -98,7 +95,7 @@ export default function DataFilter({ filter, setFilter, hideProjectFilter }) {
         </SelectContent>
       </Select>
       <Select
-        defaultValue={filter.assigneId}
+        defaultValue={filter.assigneeId}
         onValueChange={onAssigneeIdChange}
       >
         <SelectTrigger className="w-full lg:w-auto h-8">
@@ -117,23 +114,28 @@ export default function DataFilter({ filter, setFilter, hideProjectFilter }) {
           ))}
         </SelectContent>
       </Select>
-      <Select defaultValue={filter.projectId} onValueChange={onProjectIdChange}>
-        <SelectTrigger className="w-full lg:w-auto h-8">
-          <div className="flex items-center pr-2">
-            <FolderIcon className="size-4 mr-2" />
-            <SelectValue placeholder="All projects" />
-          </div>
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All projects</SelectItem>
-          <SelectSeparator />
-          {projectOptions?.map((project) => (
-            <SelectItem key={project.value} value={project.value}>
-              {project.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      {!hideProjectFilter && (
+        <Select
+          defaultValue={filter.projectId}
+          onValueChange={onProjectIdChange}
+        >
+          <SelectTrigger className="w-full lg:w-auto h-8">
+            <div className="flex items-center pr-2">
+              <FolderIcon className="size-4 mr-2" />
+              <SelectValue placeholder="All projects" />
+            </div>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All projects</SelectItem>
+            <SelectSeparator />
+            {projectOptions?.map((project) => (
+              <SelectItem key={project.value} value={project.value}>
+                {project.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      )}
       <DatePicker
         placeholder="Due date"
         className="h-8 w-full lg:w-auto"

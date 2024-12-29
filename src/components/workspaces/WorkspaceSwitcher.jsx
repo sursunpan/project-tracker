@@ -94,7 +94,7 @@
 // } from "@/redux/slices/workspaceSlice";
 
 // export default function WorkspaceSwitcher() {
-//   console.log("--------------->", "workspaceSwitcher");
+//   //("--------------->", "workspaceSwitcher");
 //   const navigate = useNavigate();
 //   const params = useParams();
 //   const dispatch = useDispatch();
@@ -105,7 +105,7 @@
 
 //   const openModal = () => {
 //     const result = dispatch(openCreateWorkspaceModal());
-//     console.log(result);
+//     //(result);
 //   };
 
 //   useEffect(() => {
@@ -113,7 +113,7 @@
 //       dispatch(setLoading(true));
 //       try {
 //         const response = await makeHTTPCall("user/workspaces", "GET", true);
-//         console.log(response);
+//         //(response);
 //         if (!response.error) {
 //           dispatch(setWorkspaces(response.workspaces || []));
 //         } else {

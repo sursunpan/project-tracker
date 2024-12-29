@@ -94,7 +94,7 @@ export default function MemberList() {
       } else {
         throw new Error(response.message);
       }
-      console.log("delete");
+      //("delete");
     } catch (error) {
       console.error("Error during workspace deletion:", error);
       toast.error(error.message || "Failed to delete workspace.");

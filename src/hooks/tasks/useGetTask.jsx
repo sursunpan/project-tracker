@@ -3,24 +3,20 @@ import { makeHTTPCall } from "@/helper/make-http-call";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
-export default function useWorkspaceMember(workspaceId) {
-  //("----------------->useWorkspaceMember");
+export default function useGetTask(id) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchMembers = async () => {
+    if (!id) return;
+    const fetchTask = async () => {
       try {
         setLoading(true);
-        const response = await makeHTTPCall(
-          `workspace/member/${workspaceId}`,
-          "GET",
-          true
-        );
+        const response = await makeHTTPCall(`task/${id}`, "GET", true);
         if (response.error === false) {
-          toast.success("Member List Success");
-          setData(response.members);
+          toast.success("Task fetch successfully");
+          setData(response.task);
         }
 
         if (response.error === true) {
@@ -35,8 +31,11 @@ export default function useWorkspaceMember(workspaceId) {
       }
     };
 
-    fetchMembers();
-  }, [navigate, workspaceId]);
+    fetchTask();
+  }, [id, navigate]);
 
+  //("Fetching members...", data);
+
+  console.log("Fetching data..", data);
   return { data, loading };
 }

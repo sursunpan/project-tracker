@@ -15,7 +15,6 @@ import { Button } from "../ui/button";
 import { useState } from "react";
 import { makeHTTPCall } from "@/helper/make-http-call";
 import { toast } from "sonner";
-import { useParams } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import DashboardLoading from "@/components/Loading";
 import DatePicker from "../datePicker";
@@ -28,18 +27,18 @@ import {
 } from "../ui/select";
 import WorkspaceMemberavatar from "../workspaces/Member-avatar";
 
-export default function CreateTaskForm({
+export default function EditTaskForm({
   onCancel,
   projectOptions,
   memberOptions,
+  initialValues,
 }) {
+  console.log("23e46tr46tr45r45r4r5r45r45r45r4546r354", initialValues);
   const [isLoading, setIsLoading] = useState(false);
-  const params = useParams();
 
   const form = useForm({
     defaultValues: {
-      workSpaceId: params.id,
-      status: "BACKLOG",
+      ...initialValues,
     },
   });
 
@@ -47,17 +46,21 @@ export default function CreateTaskForm({
     //(data);
     setIsLoading(true);
     try {
-      const response = await makeHTTPCall(`task/create`, "POST", true, {
-        workSpaceId: params.id,
-        name: data.name,
-        description: data.description,
-        dueDate: data.dueDate,
-        assigneeId: data.assigneeId,
-        projectId: data.projectId,
-        status: data.status,
-      });
+      const response = await makeHTTPCall(
+        `task/${initialValues.id}`,
+        "PUT",
+        true,
+        {
+          name: data.name,
+          description: data.description,
+          dueDate: data.dueDate,
+          assigneeId: data.assigneeId,
+          projectId: data.projectId,
+          status: data.status,
+        }
+      );
 
-      const { error, message, task } = response;
+      const { error, message } = response;
       if (error) throw new Error(message || "API error");
       toast.success("Task created successfully!");
       form.reset();
@@ -78,7 +81,7 @@ export default function CreateTaskForm({
     <>
       <Card className="w-full h-full border-none shadow-none">
         <CardHeader className="flex p-7">
-          <CardTitle className="text-xl font-bold">Create a new task</CardTitle>
+          <CardTitle className="text-xl font-bold">Update task</CardTitle>
         </CardHeader>
         <div className="px-7">
           <DottedSeparator />
@@ -120,7 +123,7 @@ export default function CreateTaskForm({
                     <FormItem>
                       <FormLabel>Assignee</FormLabel>
                       <Select
-                        defaultValue={field.value}
+                        defaultValue={initialValues?.assigneeId?._id}
                         onValueChange={field.onChange}
                       >
                         <FormControl>
@@ -184,7 +187,7 @@ export default function CreateTaskForm({
                     <FormItem>
                       <FormLabel>Project</FormLabel>
                       <Select
-                        defaultValue={field.value}
+                        defaultValue={initialValues?.projectId?._id}
                         onValueChange={field.onChange}
                       >
                         <FormControl>
@@ -224,7 +227,7 @@ export default function CreateTaskForm({
                   Cancel
                 </Button>
                 <Button type="submit" size="lg">
-                  {isLoading ? "Loading..." : "Create Task"}
+                  {isLoading ? "Loading..." : "Save Changes.."}
                 </Button>
               </div>
             </form>

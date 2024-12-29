@@ -6,7 +6,7 @@ import useWorkspaceData from "@/hooks/workspace/useWorkspaceData";
 
 export default function WorkspaceIdSettingPage() {
   const { id } = useParams();
-  console.log(id);
+  //(id);
   const { data: initialData, loading: isLoading } = useWorkspaceData(id);
   const navigate = useNavigate();
 

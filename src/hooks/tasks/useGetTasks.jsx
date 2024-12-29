@@ -39,7 +39,7 @@ export default function useGetTasks({
           true
         );
 
-        console.log("Response:", response);
+        //("Response:", response);
 
         if (!response.error) {
           setData(response.tasks || []);

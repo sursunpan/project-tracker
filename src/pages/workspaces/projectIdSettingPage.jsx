@@ -1,5 +1,3 @@
-"use server";
-
 import useProjectDetails from "@/hooks/project/useProjectDetails";
 import WorkspaceLayout from "./WorkspaceLayout";
 import { useNavigate, useParams } from "react-router-dom";

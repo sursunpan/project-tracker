@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Loader, PlusIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
@@ -11,21 +12,36 @@ import { useParams } from "react-router-dom";
 import DataFilter from "./data-filter";
 import { DataTable } from "./DataTable";
 import { column } from "../Columns";
+import DataKanban from "./data-kanban";
+import { toast } from "sonner";
+import { makeHTTPCall } from "@/helper/make-http-call";
+import DataCalendra from "./DataCalendra";
 
-export default function TaskViewSwitcher() {
+export default function TaskViewSwitcher({ hideProjectFilter }) {
+  console.log("hideProjectFilter>>>>>", hideProjectFilter);
   const params = useParams();
 
   const dispatch = useDispatch();
 
   const { taskView } = useSelector((state) => state.taskView);
 
-  const [filter, setFilter] = useState({
-    projectId: undefined,
-    assigneId: undefined,
-    dueDate: undefined,
-    search: undefined,
-    status: "all",
-  });
+  const [filter, setFilter] = useState(
+    hideProjectFilter
+      ? {
+          projectId: params.projectId,
+          assigneeId: "all",
+          dueDate: undefined,
+          search: undefined,
+          status: "all",
+        }
+      : {
+          projectId: "all",
+          assigneeId: "all",
+          dueDate: undefined,
+          search: undefined,
+          status: "all",
+        }
+  );
 
   const { data, loading } = useGetTasks({
     workSpaceId: params.id,
@@ -42,6 +58,27 @@ export default function TaskViewSwitcher() {
     },
     [dispatch]
   );
+
+  const onKanbanChange = useCallback((tasks) => {
+    const bulkUpdate = async () => {
+      try {
+        const response = await makeHTTPCall("tasks", "POST", true, {
+          tasks,
+        });
+        if (!response.error) {
+          toast.success("Tasks updated successfully!");
+        } else {
+          toast.error("Failed to update tasks!");
+          console.error("Failed to update tasks:", response.message);
+          toast.error("Failed to update tasks!");
+          console.error("Failed to update tasks:", response.message);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    bulkUpdate();
+  }, []);
 
   return (
     <Tabs
@@ -68,7 +105,11 @@ export default function TaskViewSwitcher() {
           </Button>
         </div>
         <DottedSeparator className="my-4" />
-        <DataFilter filter={filter} setFilter={setFilter} />
+        <DataFilter
+          filter={filter}
+          setFilter={setFilter}
+          hideProjectFilter={hideProjectFilter}
+        />
         <DottedSeparator className="my-4" />
         {loading ? (
           <div className="w-full border rounded-lg h-[200px] flex flex-col items-center justify-center">
@@ -80,10 +121,10 @@ export default function TaskViewSwitcher() {
               <DataTable columns={column} data={data} />
             </TabsContent>
             <TabsContent value="kanban" className="mt-0">
-              {JSON.stringify(data)}
+              <DataKanban data={data} onChange={onKanbanChange} />
             </TabsContent>
-            <TabsContent value="calendar" className="mt-0">
-              {JSON.stringify(data)}
+            <TabsContent value="calendar" className="mt-0 h-full pb-4">
+              <DataCalendra data={data} />
             </TabsContent>
           </>
         )}

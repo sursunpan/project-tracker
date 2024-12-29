@@ -20,7 +20,7 @@ export default function useWorkspaceProject(workspaceId) {
           "GET",
           true
         );
-        console.log("response", response);
+        //("response", response);
         if (!response.error) {
           setData(response.projects);
         } else {

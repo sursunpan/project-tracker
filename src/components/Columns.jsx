@@ -68,7 +68,7 @@ export const column = [
     },
     cell: ({ row }) => {
       const assignee = row.original.assigneeId._user;
-      console.log("assignee=======================", assignee);
+      //("assignee=======================", assignee);
       return (
         <div className="flex items-center gap-x-2 text-sm font-medium">
           <WorkspaceMemberavatar
@@ -124,7 +124,7 @@ export const column = [
       const projectId = row.original.projectId;
 
       return (
-        <TaskAction id={id} projectId={projectId}>
+        <TaskAction id={id} projectId={projectId.id}>
           <Button variant="ghost" className="size-8 p-0">
             <MoreVerticalIcon className="size-4" />
           </Button>

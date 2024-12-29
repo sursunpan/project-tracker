@@ -20,9 +20,9 @@ export const uploadFile = async (file, config) => {
   try {
     const command = new PutObjectCommand(params);
     const data = await s3Client.send(command);
-    // console.log("File uploaded successfully:", data);
+    // //("File uploaded successfully:", data);
     const fileUrl = `https://${config.S3BucketName}.s3.${config.S3Region}.amazonaws.com/${file.name}`;
-    // console.log("File URL:", fileUrl);
+    // //("File URL:", fileUrl);
     return { data, fileUrl };
   } catch (error) {
     console.error("Error uploading file:", error);

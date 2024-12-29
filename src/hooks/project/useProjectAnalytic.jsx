@@ -1,43 +1,37 @@
 import { useState, useEffect } from "react";
 import { makeHTTPCall } from "@/helper/make-http-call";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
 
-export default function useWorkspaceData(workspaceId) {
-  //("----------------->useWorkspaceData");
+export default function useProjectAnalytics(projectId) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
-  // const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        if (!workspaceId) {
-          toast.error("Invalid workspace ID");
-          // navigate("/");
-          return;
-        }
         const response = await makeHTTPCall(
-          `workspace/${workspaceId}`,
+          `task/${projectId}/analytic`,
           "GET",
           true
         );
-        //("response", response);
         if (!response.error) {
-          setData(response.workspace);
+          setData(response);
         } else {
           toast.error(response.message);
-          // navigate("/");
+          throw new Error(response.message);
         }
       } catch (error) {
         toast.error(error.message);
+        throw new Error(error.message);
       } finally {
         setLoading(false);
       }
     };
     fetchData();
-  }, [workspaceId]);
+  }, [projectId]);
+
+  console.log("data......................", data);
 
   return { data, loading };
 }

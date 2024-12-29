@@ -5,6 +5,8 @@ const taskModalSlice = createSlice({
   name: "taskModal",
   initialState: {
     isCreateTaskModalOpen: false,
+    isEditTaskModalOpen: false,
+    taskId: undefined,
   },
   reducers: {
     openTaskModal: (state) => {
@@ -16,10 +18,28 @@ const taskModalSlice = createSlice({
     toggleTaskModal: (state) => {
       state.isCreateTaskModalOpen = !state.isCreateTaskModalOpen;
     },
+    openEditTaskModal: (state, action) => {
+      state.isEditTaskModalOpen = true;
+      state.taskId = action.payload;
+    },
+    closeEditTaskModal: (state) => {
+      state.isEditTaskModalOpen = false;
+      state.taskId = undefined;
+    },
+    toggleEditTaskModal: (state) => {
+      state.isEditTaskModalOpen = !state.isEditTaskModalOpen;
+      state.taskId = undefined;
+    },
   },
 });
 
-export const { openTaskModal, closeTaskModal, toggleTaskModal } =
-  taskModalSlice.actions;
+export const {
+  openTaskModal,
+  closeTaskModal,
+  toggleTaskModal,
+  openEditTaskModal,
+  closeEditTaskModal,
+  toggleEditTaskModal,
+} = taskModalSlice.actions;
 
 export default taskModalSlice.reducer;

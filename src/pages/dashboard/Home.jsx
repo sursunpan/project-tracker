@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import DashboardLoading from "../../components/Loading";
 
 export default function Home() {
-  console.log("--------------->Home");
+  //("--------------->Home");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 

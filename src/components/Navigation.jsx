@@ -46,7 +46,7 @@ export default function Navigation() {
         const isActive = pathname === fullHref;
         const Icon = isActive ? item.activeIcon : item.icon;
 
-        console.log(fullHref, pathname);
+        //(fullHref, pathname);
 
         return (
           <Link key={item.href} to={fullHref}>

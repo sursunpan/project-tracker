@@ -12,6 +12,8 @@ import WorkspaceMembers from "./pages/workspaces/WorkspaceMembersPage";
 import ProjectIdPage from "./pages/dashboard/ProjectIdPage";
 import Error from "./components/Error";
 import ProjectIdSettingPage from "./pages/workspaces/projectIdSettingPage";
+import TaskPage from "./pages/dashboard/TaskPage";
+import TaskIdPage from "./pages/dashboard/TaskIdPage";
 
 function App() {
   return (
@@ -37,6 +39,9 @@ function App() {
             path="/workspace/:id/project/:projectId"
             element={<ProjectIdPage />}
           />
+          <Route path="/workspace/:id/tasks" element={<TaskPage />} />
+          <Route path="/workspace/:id/task/:taskId" element={<TaskIdPage />} />
+
           <Route
             path="/workspace/:workspaceId/project/:projectId/settings"
             element={<ProjectIdSettingPage />}
